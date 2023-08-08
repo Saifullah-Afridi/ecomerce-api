@@ -52,6 +52,9 @@ let userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    refreshToken: {
+      type: String,
+    },
     // address: [
     //   {
     //     type: ObjectId,

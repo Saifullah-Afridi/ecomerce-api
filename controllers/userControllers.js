@@ -33,9 +33,33 @@ exports.logIn = asyncErrorHandler(async (req, res, next) => {
     return next(new Error("please provide correct email and password"));
   }
   const token = generateToken(user.id);
+
+  //setting the cookie
+  res
+    .status(200)
+    .cookie("token", token, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 3000,
+    })
+    .json({
+      status: "success",
+      token,
+    });
+});
+
+//logout fucntionality
+
+exports.logout = asyncErrorHandler(async (req, res, next) => {
+  //you can create a dummy token here and send
+  //also set the time very little so it expire early
+  //that will give us error ...
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+  });
   res.status(200).json({
     status: "success",
-    token,
+    message: "user are you being logout",
   });
 });
 
