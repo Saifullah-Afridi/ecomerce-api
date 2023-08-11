@@ -12,8 +12,9 @@ exports.cretaeProduct = asyncErrorHandler(async (req, res, next) => {
 });
 
 exports.getAllProducts = asyncErrorHandler(async (req, res, next) => {
-  const products = await Product.find();
+  const products = await Product.find(req.query);
   res.status(200).json({
+    totel: products.length,
     status: "success",
     data: {
       products,
