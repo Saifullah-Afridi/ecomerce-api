@@ -12,7 +12,34 @@ exports.cretaeProduct = asyncErrorHandler(async (req, res, next) => {
 });
 
 exports.getAllProducts = asyncErrorHandler(async (req, res, next) => {
-  const products = await Product.find(req.query);
+  const queryObj = { ...req.query };
+  const excludedField = ["page", "sort", "fields", "limit"];
+  excludedField.forEach((el) => delete queryObj[el]);
+
+  // const products = await Product.find(queryObj);
+  //buidling a query which will return a query
+
+  // advance filtering includeing operator including gte lt lte gte
+
+  let queryString = JSON.stringify(queryObj);
+  queryString = queryString.replace(
+    /\b(gte|gt|lte|lt)\b/g,
+    (match) => `$${match}`
+  );
+  queryString = JSON.parse(queryString);
+
+  let query = Product.find(queryString);
+  //*****************************sorting****************************
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort("-createdAt");
+  }
+  //executing query
+  const products = await query;
+
+  //sending response
   res.status(200).json({
     totel: products.length,
     status: "success",

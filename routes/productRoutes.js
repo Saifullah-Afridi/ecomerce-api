@@ -6,13 +6,13 @@ const authMiddleware = require("../middlwares/authMiddleware");
 router.get(
   "/",
   authMiddleware.protected,
-  // add is admin
+  // authMiddleware.isAdmin,
   productControllers.getAllProducts
 );
 router.post(
   "/",
   authMiddleware.protected,
-  // add isadmin
+  authMiddleware.isAdmin,
   productControllers.cretaeProduct
 );
 router.get(
