@@ -4,7 +4,7 @@ const dotenv = require("dotenv").config({ path: "./.env" });
 const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 4000;
 const dbConnect = require("./config/databaseConnection");
-const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const { notFound, globalErrorHandler } = require("./middlwares/errorHandler");
 const morgan = require("morgan");
@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-app.use("/api/users", authRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 
 app.all("*", notFound);

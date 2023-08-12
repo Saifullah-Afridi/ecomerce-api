@@ -91,3 +91,18 @@ exports.UnBlockUser = asyncErrorHandler(async (req, res, next) => {
     message: "the user has been unblocked",
   });
 });
+
+//the forgot password functionality will have two steps
+
+exports.forgotPassword = asyncErrorHandler(async (req, res, next) => {
+  // 1)get the user based on email and check if the user exist in database
+
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new Error("the user with this email does not exist"));
+  }
+
+  // 2))generate random token
+});
+
+exports.resetPassword = asyncErrorHandler(async (req, res, next) => {});
